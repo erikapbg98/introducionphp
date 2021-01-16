@@ -100,8 +100,8 @@
   
     <tr>
     <td>1</td>
-    <td>Aneth</td>
-    <td>anethochoa@gmail.com</td>
+    <td>Paloma</td>
+    <td>eripalomita97@gmail.com</td>
     <td>*****</td>
     <td>
     <button class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
