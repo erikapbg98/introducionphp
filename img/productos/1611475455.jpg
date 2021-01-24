@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="../libraries/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../libraries/bootstrap/css/bootstrap.min.css.map">
+    <link rel="stylesheet" type="text/css" href="../libraries/bootstrap/css/bootstrap.css.map">
+    <link rel="stylesheet" type="text/css" href="../libraries/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet"  type="text/css" href="../libraries/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">  
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    
+    <title>Sistema SIFES</title> 
+
+</head>
+<body style="background-color: #e9ecef;">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar navbar-light " style="background-color: #2B4195;">
+  <div class="container">
+    <a class="navbar-brand" href="inicio.php">
+
+                  <img src="../img/LOGO_login.png" style="width: 45px ;
+    height: 50px; border-radius: 10%;" alt="" class="img-rounded">
+        </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="inicio.php" style="color: orange">Inicio
+                <span class="sr-only">(current)</span>
+              </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../views/fiel.php" style="color: white">Catálogo clientes FIEL</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../views/sello.php" style="color: orange">    Catálogo clientes SELLOS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../views/notificacioninicio.php" style="color: white">Notificaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../views/UsuarioIndex.php" style="color: orange">
+         Ajustes
+         </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <header>
+    <h4 class="text-center text-ligth" style="background-color:orange;">Sello Digital</h4>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <span class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarArchivos">
+          <i class="material-icons">library_add</i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div id="tablasello"></div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalAgregarArchivos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar archivo de cliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" autocomplete="off">
+          <form id="frmArchivos" method="POST" enctype="multipart/form-data" >
+            <div class="modal-body">
+            
+              <div class="form-group">
+                <label for="nomsello" class="col-form-label">Nombre</label>
+                <input type="text" class="form-control" id="nomsello" name="nomsello" required="">
+              </div>
+              <div class="form-group">
+                <label for="rfcsello" class="col-form-label">RFC</label>
+                <input type="text" class="form-control" id="rfcsello" name="rfcsello" required="">
+              </div>
+              <div class="form-group">
+                <label for="fechaisello" class="col-form-label">Fecha de Inicio</label>
+                <input type="date" class="form-control" id="fechaisello" name="fechaisello" required="">
+              </div>
+              <div class="form-group">
+                <label for="fechavsello" class="col-form-label">Fecha de Vencimiento</label>
+                <input type="date" class="form-control" id="fechavsello" name="fechavsello" required="">
+              </div>
+
+              <div class="form-group">
+                <label for="archivossello" class="col-form-label">Subir archivos</label>
+                <input type="file" class="form-control" id="archivossello[]" name="archivossello[]" multiple="" required="">
+
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id=btnGuardarArchivos>Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalModificarS" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modificar datos de archivo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formModificarSello" method="POST"  >
+<!-- se agrego una u a las variables por update y para diferenciarlas a las de agregar -->
+
+            <input type="text" id="idsellou" name="idsellou" hidden="">
+            <label for="nomsellou" class="col-form-label">Nombre</label>
+            <input type="text" class="form-control" id="nomsellou" name="nomsellou">
+
+
+            <label for="rfcsellou" class="col-form-label">RFC</label>
+            <input type="text" class="form-control" id="rfcsellou" name="rfcsellou">
+
+
+            <label for="fechaisellou" class="col-form-label">Fecha de Inicio</label>
+            <input type="date" class="form-control" id="fechaisellou" name="fechaisellou">
+
+
+            <label for="fechavsellou" class="col-form-label">Fecha de Vencimiento</label>
+            <input type="date" class="form-control" id="fechavsellou" name="fechavsellou">
+
+
+
+
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id=btncms>Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnmodificars">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="../libraries/jquery/jquery-3.3.1.min.js"></script> 
+  <script src="../libraries/jquery/jquery-3.2.1.min.js"></script> 
+  <script src="../libraries/jquery.slim.min.js"></script><!-- ... -->
+  <script src="../libraries/sweetalert.min.js"></script><!-- ... -->
+  <script src="../libraries/popper/popper.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script>
+ 
+
+
+
+<script type="text/javascript" src="../libraries/datatables/datatables.min.js"></script>
+
+<!-- <script type="text/javascript" src="../tablas/sello.js"></script> -->
+
+<script src="../libraries/bootstrap/js/bootstrap.min.js"></script>
+<script src="../libraries/datatables/jquery.dataTables.min.js"></script>
+  <script src="../libraries/datatables/dataTables.bootstrap4.min.js"></script>
+<!--   <script src="../libreriasarchivo/datatables/DataTables-1.10.18/jquery-3.5.1.js"></script> -->
+  
+  <!-- <script src="../libreriasarchivo/bootstrap/js/bootstrap.min.js.map"></script>
+  <script src="../libreriasarchivo/bootstrap/js/bootstrap.js"></script>
+  <script src="../libreriasarchivo/bootstrap/js/bootstrap.js.map"></script>
+  <script src="../libreriasarchivo/bootstrap/js/bootstrap.bundle.min.js"></script>
+ <script src="../libreriasarchivo/bootstrap/js/bootstrap.bundle.min.js.map"></script>
+  <script src="../libreriasarchivo/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="../libreriasarchivo/bootstrap/js/bootstrap.bundle.js.map"></script>
+   -->
+</body>
+</html>  <script src="./../js/filessello.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#tablasello').load("catalogosello.php");
+      $('#btnGuardarArchivos').click(function() {
+        agregarArchivosSello();
+
+      });
+      $('#btnmodificars').click(function() {
+      modificarSelloFuncion();
+    });
+   
+
+      });
+  </script>
+
+
